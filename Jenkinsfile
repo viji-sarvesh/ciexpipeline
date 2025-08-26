@@ -28,7 +28,7 @@ pipeline {
         stage('Deploy') {
     steps {
         echo "Running the JAR from target folder..."
-        bat "java -jar target\\*.jar"
+        bat "java -jar C:\Users\Administrator\.jenkins\workspace\CIPipeline\target\ciex-app-1.5.jar"
     }
 }
 
