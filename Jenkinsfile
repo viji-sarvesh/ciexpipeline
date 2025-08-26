@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/viji-sarvaesh/ciexpipeline.git'
+                git branch: 'main', url: 'https://github.com/viji-sarvesh/ciexpipeline.git'
             }
         }
 
