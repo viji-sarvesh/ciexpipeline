@@ -1,0 +1,26 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/viji-sarvesh/ciexpipeline.git'
+            }
+        }
+
+        stage('Download Artifact from CI') {
+            steps {
+                copyArtifacts(
+                    projectName: 'CIPipeline',   // name of your CI job
+                    selector: lastSuccessful()
+                )
+            }
+        }
+
+        stage('Deploy') {
+            steps {
+                bat 'java -jar target/ciex-app-1.5.jar'
+            }
+        }
+    }
+}
