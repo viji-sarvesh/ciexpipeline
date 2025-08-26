@@ -1,21 +1,16 @@
 pipeline {
     agent any
 
-    tools {
-        maven 'Maven3'
-        jdk 'JDK17'
-    }
-
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/viji-sarvesh/ciexpipeline.git'
+                git branch: 'main', url: 'https://github.com/YourUser/YourRepo.git'
             }
         }
 
         stage('Build') {
             steps {
-                bat 'mvn clean package'
+                bat 'mvn clean package -DskipTests'
             }
         }
 
@@ -23,20 +18,27 @@ pipeline {
             steps {
                 bat 'mvn test'
             }
+            post {
+                always {
+                    junit 'target/surefire-reports/*.xml'
+                }
+            }
         }
 
-        stage('Deploy') {
-    steps {
-        echo "Running the JAR from target folder..."
-        bat "java -jar target\\ciex-app-1.5.jar"
-    }
-}
-
+        stage('Archive Artifact') {
+            steps {
+                archiveArtifacts artifacts: 'target/*.jar', fingerprint: true
+            }
+        }
     }
 
     post {
+        success {
+            // Trigger CD pipeline automatically if CI is successful
+            build job: 'CD-Pipeline', wait: false
+        }
         always {
-            echo 'Pipeline finished!'
+            echo 'CI Pipeline finished!'
         }
     }
 }
