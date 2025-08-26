@@ -25,12 +25,16 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
-            steps {
-                echo 'Deploying application...'
-                bat 'xcopy target\\*.jar C:\\deploy /Y'
-            }
+    stage('Deploy') {
+        steps {
+            echo "Deploying application..."
+            bat """
+                echo JAR is available at %WORKSPACE%\\target
+                dir target\\*.jar
+            """
         }
+    }
+
     }
 
     post {
