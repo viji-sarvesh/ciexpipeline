@@ -25,15 +25,12 @@ pipeline {
             }
         }
 
-    stage('Deploy') {
-        steps {
-            echo "Deploying application..."
-            bat """
-                echo JAR is available at %WORKSPACE%\\target
-                dir target\\*.jar
-            """
-        }
+        stage('Deploy') {
+    steps {
+        echo "Running the JAR from target folder..."
+        bat "java -jar target\\*.jar"
     }
+}
 
     }
 
